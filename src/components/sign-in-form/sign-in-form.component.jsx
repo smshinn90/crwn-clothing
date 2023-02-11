@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.compononent";
 import {
@@ -6,6 +6,8 @@ import {
   createUserDocumentFromAuth,
   signInWithNativeEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
+
+import { UserContext } from "../../context/user.context";
 
 import "./sign-in-form.styles.scss";
 
@@ -20,12 +22,10 @@ const SignInForm = () => {
     await createUserDocumentFromAuth(user);
   };
 
-  const logUser = async (email, password) => {
-    await signInWithNativeEmailAndPassword(email, password);
-  };
-
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -33,9 +33,10 @@ const SignInForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
-      const userObject = await logUser(email, password);
-      console.log(userObject);
+      const { user } = await signInWithNativeEmailAndPassword(email, password);
+      setCurrentUser(user);
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-email":
