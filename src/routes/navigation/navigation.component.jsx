@@ -1,5 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext } from "react";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 
@@ -14,7 +14,7 @@ import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component
 
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
-  const { cartOpen, setCartOpen } = useContext(CartContext);
+  const { cartOpen } = useContext(CartContext);
 
   return (
     <Fragment>

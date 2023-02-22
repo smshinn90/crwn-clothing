@@ -1,0 +1,42 @@
+.checkout-item-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 30%;
+  padding: 20px;
+  border-bottom: 2px solid gray;
+}
+
+.checkout-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  font-size: 1.25rem;
+}
+
+.checkout-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+}
+
+.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkout-col:last-child {
+  margin-right: 0;
+}
+
+.col-image {
+  width: 12rem;
+  height: 12rem;
+  object-fit: cover;
+}
+
+.item-quantity {
+  margin: 0 1rem;
+  font-size: 2rem;
+}
