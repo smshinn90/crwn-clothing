@@ -40,7 +40,9 @@ export const CartProvider = ({ children }) => {
       0
     );
     setCartCount(newCartCount);
+  }, [cartItems]);
 
+  useEffect(() => {
     const newCartTotal = cartItems.reduce(
       (total, cartItem) => total + cartItem.price * cartItem.quantity,
       0
@@ -53,10 +55,9 @@ export const CartProvider = ({ children }) => {
   };
 
   const quantityUp = (checkoutItem) => {
-    const itemIndex = cartItems.findIndex((el) => el.id === checkoutItem.id);
-    const itemQuantity = cartItems[itemIndex].quantity;
+    const item = cartItems.find((el) => el.id === checkoutItem.id);
 
-    if (itemQuantity < 99) {
+    if (item.quantity < 99) {
       setCartItems(
         cartItems.map((cartItem) =>
           cartItem.id === checkoutItem.id
@@ -68,10 +69,9 @@ export const CartProvider = ({ children }) => {
   };
 
   const quantityDown = (checkoutItem) => {
-    const itemIndex = cartItems.findIndex((el) => el.id === checkoutItem.id);
-    const itemQuantity = cartItems[itemIndex].quantity;
+    const item = cartItems.find((el) => el.id === checkoutItem.id);
 
-    if (itemQuantity > 1) {
+    if (item.quantity > 1) {
       setCartItems(
         cartItems.map((cartItem) =>
           cartItem.id === checkoutItem.id
