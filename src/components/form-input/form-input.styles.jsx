@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 $sub-color: grey;
 $main-color: black;
 
