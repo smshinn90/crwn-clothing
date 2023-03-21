@@ -1,12 +1,14 @@
 import { useState } from "react";
-import Button from "../button/button.component";
+
 import FormInput from "../form-input/form-input.compononent";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+
 import {
-  signInWithGooglePopup,
   signInWithNativeEmailAndPassword,
+  signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
 
-import "./sign-in-form.styles.scss";
+import { SignInContainer, ButtonsContainer } from "./sign-in-form.styles";
 
 const defaultFormFields = {
   email: "",
@@ -14,10 +16,6 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
-  const logGoogleUser = async () => {
-    await signInWithGooglePopup();
-  };
-
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -25,50 +23,29 @@ const SignInForm = () => {
     setFormFields(defaultFormFields);
   };
 
+  const signInWithGoogle = async () => {
+    await signInWithGooglePopup();
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       await signInWithNativeEmailAndPassword(email, password);
+      resetFormFields();
     } catch (error) {
-      switch (error.code) {
-        case "auth/invalid-email":
-          alert("Invalid email address.");
-          break;
-        case "auth/user-not-found":
-          alert("Email address not found.");
-          break;
-        case "auth/wrong-password":
-          alert("Incorrect password.");
-          break;
-        case "auth/too-many-requests":
-          alert("Too many sign-in attempts, please try again later.");
-          break;
-        case "auth/network-request-failed":
-          alert("Network error, please try again later.");
-          break;
-        case "auth/email-already-in-use":
-          alert("Email address already in use.");
-          break;
-        case "auth/operation-not-allowed":
-          alert(
-            "Email and password authentication is not enabled for this project."
-          );
-          break;
-        default:
-          alert("An error has occurred, please try again later.");
-      }
+      console.log("user sign in failed", error);
     }
-    resetFormFields();
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     setFormFields({ ...formFields, [name]: value });
   };
 
   return (
-    <div className="sign-in-container">
+    <SignInContainer>
       <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
@@ -80,6 +57,7 @@ const SignInForm = () => {
           name="email"
           value={email}
         />
+
         <FormInput
           label="Password"
           type="password"
@@ -88,14 +66,18 @@ const SignInForm = () => {
           name="password"
           value={password}
         />
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign In</Button>
-          <Button type="button" buttonType="google" onClick={logGoogleUser}>
-            Google Sign In
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type="button"
+            onClick={signInWithGoogle}
+          >
+            Sign In With Google
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 
